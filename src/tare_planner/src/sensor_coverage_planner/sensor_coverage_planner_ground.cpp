@@ -1359,7 +1359,7 @@ void SensorCoveragePlanner3D::PublishWaypoint() {
     double extend_dist = lookahead_point_in_line_of_sight_
                              ? kExtendWayPointDistanceBig
                              : kExtendWayPointDistanceSmall;
-    if (r < extend_dist && kExtendWayPoint) {
+    if (r > 1e-3 && r < extend_dist && kExtendWayPoint) {
       dx = dx / r * extend_dist;
       dy = dy / r * extend_dist;
     }
@@ -1530,7 +1530,8 @@ void SensorCoveragePlanner3D::execute() {
     double current_time = this->now().seconds();
     double delta_time = current_time - start_time_;
 
-    if (grid_world_->IsReturningHome() &&
+    // hackathon2026: never mark exploration finished via return-home in compact maze
+    if (false && grid_world_->IsReturningHome() &&
         local_coverage_planner_->IsLocalCoverageComplete() &&
         (current_time - start_time_) > 5) {
       if (!exploration_finished_) {

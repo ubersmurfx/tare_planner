@@ -801,7 +801,9 @@ exploration_path_ns::ExplorationPath GridWorld::SolveGlobalTSP(
   /****** Return home ******/
   if (exploring_cell_indices.empty())
   {
-    return_home_ = true;
+    // hackathon2026: compact maze fits in GridWorld "nearby"; do not return home.
+    return_home_ = false;
+    return global_path;
 
     geometry_msgs::msg::Point home_position;
 
